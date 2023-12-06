@@ -1,0 +1,11 @@
+programa teste
+  inteiro soma total
+inicio  
+  leia soma
+  enquanto soma > 0 faca
+    escreva soma
+    total <- total + soma
+    soma <- soma - 1
+  fimenquanto
+  escreva total
+fimprograma

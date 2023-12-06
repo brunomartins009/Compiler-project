@@ -1,0 +1,11 @@
+programa teste1
+    inteiro a b c
+    logico x
+inicio 
+    leia a
+    se a > 10 entao
+        escreva a * 10
+    senao 
+        escreva a - 10
+    fimse
+fimprograma

@@ -1,0 +1,7 @@
+flex -t conta.l > conta.c       //gera o programa conta.c referente ao programa cirado
+gcc conta.c -o conta
+./conta < teste.txt
+
+
+
+//wc teste.txt
