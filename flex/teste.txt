@@ -1,0 +1,6 @@
+abacate
+123aba
+abacate123
+12345
+$123
+#legal!

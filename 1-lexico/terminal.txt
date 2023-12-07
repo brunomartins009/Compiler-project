@@ -1,0 +1,3 @@
+flex -t lexico.l > lexico.c
+
+./lexico < programa.simples

@@ -1,0 +1,14 @@
+simples: lexico.l sintatico.y;   #sempre que esses arquivos forem modificados faça:
+	flex -o lexico.c lexico.l;\
+	bison -v -d sintatico.y -o sintatico.c;\
+	gcc sintatico.c -o simples;
+
+limpa: ;
+	rm lexico.c sintatico.c sintatico.h sintatico.output simples
+
+
+
+
+terminal: make
+
+./simples < <nome_do_arquivo.simples>
