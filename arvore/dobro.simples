@@ -1,6 +1,0 @@
-programa dobro
-    inteiro n
-inicio
-    leia n
-    escereva 2 * n 
-fimprograma
