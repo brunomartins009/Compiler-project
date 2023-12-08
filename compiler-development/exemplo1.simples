@@ -1,0 +1,18 @@
+
+programa registro1
+def                //  Representacao     Memoria
+  inteiro a        //   y               +-------+
+  logico b         //  +--------+     0 |       | x
+fimdef c           //  | x      |       +-------+    
+                   //  | +---+  |     1 |       | a  | x  | y
+def                //  | |   |a |       +-------+    |    |
+  registro c x     //  | +---+  |     2 |       | b  |    |
+  inteiro y        //  | |   |b |       +-------+         |
+fimdef d           //  | +---+  |     3 |       | y       |
+                   //  | y      |       +-------+
+inteiro x          //  | +---+  |     4 |       | z
+registro d y       //  | |   |  |       +-------+
+logico z           //  | +---+  |     5 |       |
+                   //  +--------+         (...)
+inicio
+fimprograma
