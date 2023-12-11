@@ -9,9 +9,9 @@ int contaVar = 0;
 int rotulo = 0;
 int ehRegistro = 0;
 int tipo;
-int tam; // tamanho da estrutura quando percorrer exepressao de acesso 
+int tam; // tamanho da estrutura quando percorre expressão de acesso
 int des; // deslocamento para chegar no campo
-int pos; // posicao do tipo na tabela de simbolos 
+int pos; // posicao do tipo na tabela de simbolos
 %}
 
 %token T_PROGRAMA
@@ -85,7 +85,12 @@ cabecalho
 tipo
    : T_LOGICO
          { 
-            tipo = LOG; 
+            tipo = LOG;
+            // tam = ;
+            // pos = ;
+            tam = buscaSimbolo(atomo);
+            pos = buscaSimbolo(atomo);
+
             // TODO #1
             // Além do tipo, precisa guardar o TAM (tamanho) do
             // tipo e a POS (posição) do tipo na tab. símbolos
@@ -93,11 +98,19 @@ tipo
    | T_INTEIRO
          { 
             tipo = INT;
+            // tam = ;
+            // pos = ;
+            tam = buscaSimbolo(atomo);
+            pos = buscaSimbolo(atomo);
+
             // idem 
         }
    | T_REGISTRO T_IDENTIF
          { 
-            tipo = REG; 
+            tipo = REG;
+            tam = buscaSimbolo(atomo);
+            pos = buscaSimbolo(atomo);
+
             // TODO #2
             // Aqui tem uma chamada de buscaSimbolo para encontrar
             // as informações de TAM e POS do registro
@@ -176,7 +189,7 @@ lista_variaveis
             // idem
             insereSimbolo (elemTab);
             contaVar++;
-            // bidem 
+            // idem 
        }
    ;
 
