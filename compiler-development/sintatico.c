@@ -79,9 +79,9 @@ int contaVar = 0;
 int rotulo = 0;
 int ehRegistro = 0;
 int tipo;
-int tam; // tamanho da estrutura quando percorrer exepressao de acesso 
+int tam; // tamanho da estrutura quando percorre expressão de acesso
 int des; // deslocamento para chegar no campo
-int pos; // posicao do tipo na tabela de simbolos 
+int pos; // posicao do tipo na tabela de simbolos
 
 #line 87 "sintatico.c"
 
@@ -569,12 +569,12 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    65,    65,    72,    64,    81,    86,    93,    98,   108,
-     109,   114,   113,   127,   128,   132,   140,   147,   148,   152,
-     153,   157,   171,   184,   185,   189,   190,   191,   192,   196,
-     197,   201,   213,   225,   224,   250,   258,   249,   273,   278,
-     272,   295,   297,   299,   301,   303,   305,   307,   309,   311,
-     313,   318,   317,   334,   353,   361,   366,   371,   376,   384
+       0,    65,    65,    72,    64,    81,    86,    97,   106,   120,
+     121,   126,   125,   156,   157,   161,   176,   187,   188,   192,
+     193,   197,   211,   224,   225,   229,   230,   231,   232,   236,
+     237,   241,   253,   265,   264,   290,   298,   289,   313,   318,
+     312,   335,   337,   339,   341,   343,   345,   347,   349,   351,
+     353,   358,   357,   374,   393,   401,   406,   411,   416,   424
 };
 #endif
 
@@ -1245,75 +1245,115 @@ yyreduce:
   case 6: /* tipo: T_LOGICO  */
 #line 87 "sintatico.y"
          { 
-            tipo = LOG; 
+            tipo = LOG;
+
+            // tam = buscaSimbolo(atomo);
+            // pos = buscaSimbolo(atomo);
+
             // TODO #1
             // Além do tipo, precisa guardar o TAM (tamanho) do
             // tipo e a POS (posição) do tipo na tab. símbolos
          }
-#line 1254 "sintatico.c"
+#line 1258 "sintatico.c"
     break;
 
   case 7: /* tipo: T_INTEIRO  */
-#line 94 "sintatico.y"
+#line 98 "sintatico.y"
          { 
             tipo = INT;
+
+            // tam = buscaSimbolo(atomo);
+            // pos = buscaSimbolo(atomo);
+
             // idem 
         }
-#line 1263 "sintatico.c"
+#line 1271 "sintatico.c"
     break;
 
   case 8: /* tipo: T_REGISTRO T_IDENTIF  */
-#line 99 "sintatico.y"
+#line 107 "sintatico.y"
          { 
-            tipo = REG; 
+            tipo = REG;
+
+            // tam = buscaSimbolo(atomo);
+            // pos = buscaSimbolo(atomo);
+
             // TODO #2
             // Aqui tem uma chamada de buscaSimbolo para encontrar
             // as informações de TAM e POS do registro
          }
-#line 1274 "sintatico.c"
+#line 1286 "sintatico.c"
     break;
 
   case 11: /* $@3: %empty  */
-#line 114 "sintatico.y"
+#line 126 "sintatico.y"
         {
             // TODO #3
             // Iniciar a lista de campos
+
+            // // Inicialize a lista de campos quando encontrar um novo tipo
+            // // Aqui, você cria uma nova instância da estrutura ListaCampos
+            // struct ListaCampos listaCampos;
+            // listaCampos.numCampos = 0;  // Inicializa o número de campos como zero
+            // // Atualize os atributos da tabela de símbolos
+            // tabSimb[pos].tam = 0;
+            // tabSimb[pos].pos = -1;  // ou outro valor indicando que não foi definido ainda
+            // tabSimb[pos].listaCampos = listaCampos;
         }
-#line 1283 "sintatico.c"
+#line 1304 "sintatico.c"
     break;
 
   case 12: /* define: T_DEF $@3 definicao_campos T_FIMDEF T_IDENTIF  */
-#line 119 "sintatico.y"
+#line 140 "sintatico.y"
        {
            // TODO #4
            // Inserir esse novo tipo na tabela de simbolos
            // com a lista que foi montada
+
+         //   // Agora, você associa essa lista de campos ao tipo definido
+         //   // na tabela de símbolos.
+         //   tabSimb[pos].listaCampos = listaCampos;
+         //   tabSimb[pos].tam = litabSimb[pos].ListaCampos.numCampos;
+         //   tabSimb[pos].pos = pos;  // ou o valor correto, dependendo da sua implementação
+         //   tabSimb[pos].listaCampos = listaCampos;
+
        }
-#line 1293 "sintatico.c"
+#line 1322 "sintatico.c"
     break;
 
   case 15: /* lista_campos: lista_campos T_IDENTIF  */
-#line 133 "sintatico.y"
+#line 162 "sintatico.y"
       {
          // TODO #5
          // acrescentar esse campo na lista de campos que
          // esta sendo construida
          // o deslocamento (endereço) do próximo campo
          // será o deslocamento anterior mais o tamanho desse campo
+
+         //          // Aqui, você adiciona o campo atual à lista
+         // // de campos associada ao tipo sendo definido.
+         // // Supondo que listaCampos é a estrutura associada ao tipo:
+         // strcpy(listaCampos.campos[listaCampos.numCampos].nome, atomo);
+         // listaCampos.campos[listaCampos.numCampos].tipo = tipo;
+         // listaCampos.numCampos++;
       }
-#line 1305 "sintatico.c"
+#line 1341 "sintatico.c"
     break;
 
   case 16: /* lista_campos: T_IDENTIF  */
-#line 141 "sintatico.y"
+#line 177 "sintatico.y"
       {
-        // idem
+         // // idem
+         // // Faça o mesmo aqui, pois é uma lista com um único campo.
+         // strcpy(listaCampos.campos[listaCampos.numCampos].nome, atomo);
+         // listaCampos.campos[listaCampos.numCampos].tipo = tipo;
+         // listaCampos.numCampos++;
       }
-#line 1313 "sintatico.c"
+#line 1353 "sintatico.c"
     break;
 
   case 21: /* lista_variaveis: lista_variaveis T_IDENTIF  */
-#line 159 "sintatico.y"
+#line 199 "sintatico.y"
         { 
             strcpy(elemTab.id, atomo);
             elemTab.end = contaVar;
@@ -1326,11 +1366,11 @@ yyreduce:
             // Se a variavel for registro
             // contaVar = contaVar + TAM (tamanho do registro)
         }
-#line 1330 "sintatico.c"
+#line 1370 "sintatico.c"
     break;
 
   case 22: /* lista_variaveis: T_IDENTIF  */
-#line 172 "sintatico.y"
+#line 212 "sintatico.y"
        { 
             strcpy(elemTab.id, atomo);
             elemTab.end = contaVar;
@@ -1338,13 +1378,13 @@ yyreduce:
             // idem
             insereSimbolo (elemTab);
             contaVar++;
-            // bidem 
+            // idem 
        }
-#line 1344 "sintatico.c"
+#line 1384 "sintatico.c"
     break;
 
   case 31: /* entrada: T_LEIA T_IDENTIF  */
-#line 202 "sintatico.y"
+#line 242 "sintatico.y"
        { 
           int pos = buscaSimbolo (atomo);
           // TODO #8
@@ -1353,11 +1393,11 @@ yyreduce:
           fprintf(yyout, "\tLEIA\n"); 
           fprintf(yyout, "\tARZG\t%d\n", tabSimb[pos].end);
        }
-#line 1357 "sintatico.c"
+#line 1397 "sintatico.c"
     break;
 
   case 32: /* saida: T_ESCREVA expressao  */
-#line 214 "sintatico.y"
+#line 254 "sintatico.y"
        {  
           desempilha(); 
           // TODO #9
@@ -1365,11 +1405,11 @@ yyreduce:
           // TAM do registro de escritas
           fprintf(yyout, "\tESCR\n"); 
       }
-#line 1369 "sintatico.c"
+#line 1409 "sintatico.c"
     break;
 
   case 33: /* $@4: %empty  */
-#line 225 "sintatico.y"
+#line 265 "sintatico.y"
        { 
          // TODO #10 - FEITO
          // Tem que guardar o TAM, DES e o TIPO (POS do tipo, se for registro)
@@ -1377,11 +1417,11 @@ yyreduce:
           empilha(des);
           empilha(tipo);
        }
-#line 1381 "sintatico.c"
+#line 1421 "sintatico.c"
     break;
 
   case 34: /* atribuicao: expressao_acesso $@4 T_ATRIB expressao  */
-#line 233 "sintatico.y"
+#line 273 "sintatico.y"
        { 
           int tipexp = desempilha();
           int tipvar = desempilha();
@@ -1395,11 +1435,11 @@ yyreduce:
           for (int i = 0; i < tam; i++)
              fprintf(yyout, "\tARZG\t%d\n", des + i); 
        }
-#line 1399 "sintatico.c"
+#line 1439 "sintatico.c"
     break;
 
   case 35: /* $@5: %empty  */
-#line 250 "sintatico.y"
+#line 290 "sintatico.y"
        {  
           int t = desempilha();
           if (t != LOG)
@@ -1407,40 +1447,40 @@ yyreduce:
           fprintf(yyout, "\tDSVF\tL%d\n", ++rotulo); 
           empilha(rotulo);
        }
-#line 1411 "sintatico.c"
+#line 1451 "sintatico.c"
     break;
 
   case 36: /* $@6: %empty  */
-#line 258 "sintatico.y"
+#line 298 "sintatico.y"
        {  
            fprintf(yyout, "\tDSVS\tL%d\n", ++rotulo);
            int rot = desempilha(); 
            fprintf(yyout, "L%d\tNADA\n", rot);
            empilha(rotulo); 
        }
-#line 1422 "sintatico.c"
+#line 1462 "sintatico.c"
     break;
 
   case 37: /* selecao: T_SE expressao T_ENTAO $@5 lista_comandos T_SENAO $@6 lista_comandos T_FIMSE  */
-#line 265 "sintatico.y"
+#line 305 "sintatico.y"
        {  
           int rot = desempilha();
           fprintf(yyout, "L%d\tNADA\n", rot);  
        }
-#line 1431 "sintatico.c"
+#line 1471 "sintatico.c"
     break;
 
   case 38: /* $@7: %empty  */
-#line 273 "sintatico.y"
+#line 313 "sintatico.y"
        { 
          fprintf(yyout, "L%d\tNADA\n", ++rotulo);
          empilha(rotulo);  
        }
-#line 1440 "sintatico.c"
+#line 1480 "sintatico.c"
     break;
 
   case 39: /* $@8: %empty  */
-#line 278 "sintatico.y"
+#line 318 "sintatico.y"
        {  
          int t = desempilha();
          if (t != LOG)
@@ -1448,76 +1488,76 @@ yyreduce:
          fprintf(yyout, "\tDSVF\tL%d\n", ++rotulo); 
          empilha(rotulo);
        }
-#line 1452 "sintatico.c"
+#line 1492 "sintatico.c"
     break;
 
   case 40: /* repeticao: T_ENQTO $@7 expressao T_FACA $@8 lista_comandos T_FIMENQTO  */
-#line 286 "sintatico.y"
+#line 326 "sintatico.y"
        { 
           int rot1 = desempilha();
           int rot2 = desempilha();
           fprintf(yyout, "\tDSVS\tL%d\n", rot2);
           fprintf(yyout, "L%d\tNADA\n", rot1);  
        }
-#line 1463 "sintatico.c"
+#line 1503 "sintatico.c"
     break;
 
   case 41: /* expressao: expressao T_VEZES expressao  */
-#line 296 "sintatico.y"
+#line 336 "sintatico.y"
        {  testaTipo(INT,INT,INT); fprintf(yyout, "\tMULT\n");  }
-#line 1469 "sintatico.c"
+#line 1509 "sintatico.c"
     break;
 
   case 42: /* expressao: expressao T_DIV expressao  */
-#line 298 "sintatico.y"
+#line 338 "sintatico.y"
        {  testaTipo(INT,INT,INT); fprintf(yyout, "\tDIVI\n");  }
-#line 1475 "sintatico.c"
+#line 1515 "sintatico.c"
     break;
 
   case 43: /* expressao: expressao T_MAIS expressao  */
-#line 300 "sintatico.y"
+#line 340 "sintatico.y"
       {  testaTipo(INT,INT,INT); fprintf(yyout, "\tSOMA\n");  }
-#line 1481 "sintatico.c"
+#line 1521 "sintatico.c"
     break;
 
   case 44: /* expressao: expressao T_MENOS expressao  */
-#line 302 "sintatico.y"
+#line 342 "sintatico.y"
       {  testaTipo(INT,INT,INT); fprintf(yyout, "\tSUBT\n");  }
-#line 1487 "sintatico.c"
+#line 1527 "sintatico.c"
     break;
 
   case 45: /* expressao: expressao T_MAIOR expressao  */
-#line 304 "sintatico.y"
+#line 344 "sintatico.y"
       {  testaTipo(INT,INT,LOG); fprintf(yyout, "\tCMMA\n");  }
-#line 1493 "sintatico.c"
+#line 1533 "sintatico.c"
     break;
 
   case 46: /* expressao: expressao T_MENOR expressao  */
-#line 306 "sintatico.y"
+#line 346 "sintatico.y"
       {  testaTipo(INT,INT,LOG); fprintf(yyout, "\tCMME\n");  }
-#line 1499 "sintatico.c"
+#line 1539 "sintatico.c"
     break;
 
   case 47: /* expressao: expressao T_IGUAL expressao  */
-#line 308 "sintatico.y"
+#line 348 "sintatico.y"
       {  testaTipo(INT,INT,LOG); fprintf(yyout, "\tCMIG\n");  }
-#line 1505 "sintatico.c"
+#line 1545 "sintatico.c"
     break;
 
   case 48: /* expressao: expressao T_E expressao  */
-#line 310 "sintatico.y"
+#line 350 "sintatico.y"
       {  testaTipo(LOG,LOG,LOG); fprintf(yyout, "\tCONJ\n");  }
-#line 1511 "sintatico.c"
+#line 1551 "sintatico.c"
     break;
 
   case 49: /* expressao: expressao T_OU expressao  */
-#line 312 "sintatico.y"
+#line 352 "sintatico.y"
       {  testaTipo(LOG,LOG,LOG); fprintf(yyout, "\tDISJ\n");  }
-#line 1517 "sintatico.c"
+#line 1557 "sintatico.c"
     break;
 
   case 51: /* $@9: %empty  */
-#line 318 "sintatico.y"
+#line 358 "sintatico.y"
        {   //--- Primeiro nome do registro
            if (!ehRegistro) {
               ehRegistro = 1;
@@ -1533,11 +1573,11 @@ yyreduce:
               // 4. guardar o TAM, POS e DES desse CAMPO
            }
        }
-#line 1537 "sintatico.c"
+#line 1577 "sintatico.c"
     break;
 
   case 53: /* expressao_acesso: T_IDENTIF  */
-#line 335 "sintatico.y"
+#line 375 "sintatico.y"
        {   
            if (ehRegistro) {
                // TODO #13
@@ -1554,11 +1594,11 @@ yyreduce:
            }
            ehRegistro = 0;
        }
-#line 1558 "sintatico.c"
+#line 1598 "sintatico.c"
     break;
 
   case 54: /* termo: expressao_acesso  */
-#line 354 "sintatico.y"
+#line 394 "sintatico.y"
        {
           // TODO #15
           // Se for registro, tem que fazer uma repetição do
@@ -1566,38 +1606,38 @@ yyreduce:
           fprintf(yyout, "\tCRVG\t%d\n", tabSimb[pos].end);  
           empilha(tipo);
        }
-#line 1570 "sintatico.c"
+#line 1610 "sintatico.c"
     break;
 
   case 55: /* termo: T_NUMERO  */
-#line 362 "sintatico.y"
+#line 402 "sintatico.y"
        {  
           fprintf(yyout, "\tCRCT\t%s\n", atomo);  
           empilha(INT);
        }
-#line 1579 "sintatico.c"
+#line 1619 "sintatico.c"
     break;
 
   case 56: /* termo: T_V  */
-#line 367 "sintatico.y"
+#line 407 "sintatico.y"
        {  
           fprintf(yyout, "\tCRCT\t1\n");
           empilha(LOG);
        }
-#line 1588 "sintatico.c"
+#line 1628 "sintatico.c"
     break;
 
   case 57: /* termo: T_F  */
-#line 372 "sintatico.y"
+#line 412 "sintatico.y"
        {  
           fprintf(yyout, "\tCRCT\t0\n"); 
           empilha(LOG);
        }
-#line 1597 "sintatico.c"
+#line 1637 "sintatico.c"
     break;
 
   case 58: /* termo: T_NAO termo  */
-#line 377 "sintatico.y"
+#line 417 "sintatico.y"
        {  
           int t = desempilha();
           if (t != LOG)
@@ -1605,11 +1645,11 @@ yyreduce:
           fprintf(yyout, "\tNEGA\n");
           empilha(LOG);
        }
-#line 1609 "sintatico.c"
+#line 1649 "sintatico.c"
     break;
 
 
-#line 1613 "sintatico.c"
+#line 1653 "sintatico.c"
 
       default: break;
     }
@@ -1802,7 +1842,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 386 "sintatico.y"
+#line 426 "sintatico.y"
 
 
 int main(int argc, char *argv[]) {

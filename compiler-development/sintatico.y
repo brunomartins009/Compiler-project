@@ -86,10 +86,9 @@ tipo
    : T_LOGICO
          { 
             tipo = LOG;
-            // tam = ;
-            // pos = ;
-            tam = buscaSimbolo(atomo);
-            pos = buscaSimbolo(atomo);
+
+            // tam = buscaSimbolo(atomo);
+            // pos = buscaSimbolo(atomo);
 
             // TODO #1
             // Além do tipo, precisa guardar o TAM (tamanho) do
@@ -98,18 +97,18 @@ tipo
    | T_INTEIRO
          { 
             tipo = INT;
-            // tam = ;
-            // pos = ;
-            tam = buscaSimbolo(atomo);
-            pos = buscaSimbolo(atomo);
+
+            // tam = buscaSimbolo(atomo);
+            // pos = buscaSimbolo(atomo);
 
             // idem 
         }
    | T_REGISTRO T_IDENTIF
          { 
             tipo = REG;
-            tam = buscaSimbolo(atomo);
-            pos = buscaSimbolo(atomo);
+
+            // tam = buscaSimbolo(atomo);
+            // pos = buscaSimbolo(atomo);
 
             // TODO #2
             // Aqui tem uma chamada de buscaSimbolo para encontrar
@@ -127,12 +126,29 @@ define
         {
             // TODO #3
             // Iniciar a lista de campos
+
+            // // Inicialize a lista de campos quando encontrar um novo tipo
+            // // Aqui, você cria uma nova instância da estrutura ListaCampos
+            // struct ListaCampos listaCampos;
+            // listaCampos.numCampos = 0;  // Inicializa o número de campos como zero
+            // // Atualize os atributos da tabela de símbolos
+            // tabSimb[pos].tam = 0;
+            // tabSimb[pos].pos = -1;  // ou outro valor indicando que não foi definido ainda
+            // tabSimb[pos].listaCampos = listaCampos;
         } 
    definicao_campos T_FIMDEF T_IDENTIF
        {
            // TODO #4
            // Inserir esse novo tipo na tabela de simbolos
            // com a lista que foi montada
+
+         //   // Agora, você associa essa lista de campos ao tipo definido
+         //   // na tabela de símbolos.
+         //   tabSimb[pos].listaCampos = listaCampos;
+         //   tabSimb[pos].tam = litabSimb[pos].ListaCampos.numCampos;
+         //   tabSimb[pos].pos = pos;  // ou o valor correto, dependendo da sua implementação
+         //   tabSimb[pos].listaCampos = listaCampos;
+
        }
    ;
 
@@ -149,10 +165,21 @@ lista_campos
          // esta sendo construida
          // o deslocamento (endereço) do próximo campo
          // será o deslocamento anterior mais o tamanho desse campo
+
+         //          // Aqui, você adiciona o campo atual à lista
+         // // de campos associada ao tipo sendo definido.
+         // // Supondo que listaCampos é a estrutura associada ao tipo:
+         // strcpy(listaCampos.campos[listaCampos.numCampos].nome, atomo);
+         // listaCampos.campos[listaCampos.numCampos].tipo = tipo;
+         // listaCampos.numCampos++;
       }
    | T_IDENTIF
       {
-        // idem
+         // // idem
+         // // Faça o mesmo aqui, pois é uma lista com um único campo.
+         // strcpy(listaCampos.campos[listaCampos.numCampos].nome, atomo);
+         // listaCampos.campos[listaCampos.numCampos].tipo = tipo;
+         // listaCampos.numCampos++;
       }
    ;
 

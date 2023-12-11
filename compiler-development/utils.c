@@ -9,6 +9,27 @@ enum
 
 //TODO: criar lista de campos?
 
+// Defina uma estrutura para representar um campo de registro
+struct CampoRegistro {
+    char nome[100];  // Nome do campo
+    int tipo;        // Tipo do campo (INT, LOG, REG)
+    
+    // Outros campos que você pode precisar, como tamanho, posição, etc.
+    int pos;     // Posição do campo no registro (em bytes)
+    int des;  // Deslocamento do campo no registro (em bytes)
+    int tam;     // Tamanho do campo (em bytes)
+};
+
+// Defina uma estrutura para representar a lista de campos de um registro
+struct ListaCampos {
+    struct CampoRegistro campos[5];  // Por exemplo, assumindo no máximo 5 campos por registro
+    int numCampos;  // Número atual de campos na lista
+
+};
+
+
+
+
 //TODO: criar função para percorrer a lista de campos
 
 
@@ -20,16 +41,20 @@ char nomeTipo[3][4] = {
 
 #define TAM_TAB 100
 
+
 //acrescentar campos na tabela
 struct  elemTabSimbolos 
 {
     char id[100];   // nome do identificador   
     int end;        // endereco
     int tip;        // tipo
-    int tam; 
-    int pos;
-    char campos[5];
+    int tam;        // tamanho
+    int pos;       // posicao
+    struct ListaCampos listaCampos;
 } tabSimb[TAM_TAB], elemTab;
+
+// struct elemTabSimbolos tabSimb[5]; // assumindo que MAX é o tamanho máximo
+// struct elemTabSimbolos litabSimb[5]; // declare litabSimb
 
 int posTab = 0;    // indica a próxima posição livre para inserção
 
@@ -60,6 +85,7 @@ void insereSimbolo (struct elemTabSimbolos elem)
     sprintf(msg, "Identificador [%s] duplicado!", elem.id);
     yyerror(msg);
     }
+    char msg[200];    // s
     tabSimb[posTab++] = elem;         // insere o elemento na posição posTab++
 }
 
@@ -70,18 +96,22 @@ void mostraTabela()
     for(int i = 0; i < 90; i++)
         printf("-");
     for(int i = 0; i < posTab; i++)
-        printf("\n%30s | %3d | %s | %d | %d | %s", 
+        printf("\n%30s | %3d | %s | %d | %d | (%s, %d, %d, %d, %d)", 
                 tabSimb[i].id,
                 tabSimb[i].end,
                 nomeTipo[tabSimb[i].tip],
                 tabSimb[i].tam,
                 tabSimb[i].pos,
-                (tabSimb[i].campos ? tabSimb[i].campos: ""));
+                tabSimb[i].listaCampos.campos->nome, 
+                tabSimb[i].listaCampos.campos->tipo, 
+                tabSimb[i].listaCampos.campos->pos, 
+                tabSimb[i].listaCampos.campos->des, 
+                tabSimb[i].listaCampos.campos->tam);
     puts("");
 }
 
 // Pilha Semantica
-#define TAM_PIL 100
+#define TAM_PIL 100// criar uma estrutura e operações para manipular uma lista de campos
 int pilha[TAM_PIL];
 int topo = -1;      
 
