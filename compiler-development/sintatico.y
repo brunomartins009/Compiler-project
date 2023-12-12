@@ -62,58 +62,53 @@ int pos; // posicao do tipo na tabela de simbolos
 
 programa 
    : cabecalho definicoes variaveis 
-        { 
+         { 
             mostraTabela();
             empilha (contaVar);
             if (contaVar)
                fprintf(yyout, "\tAMEM\t%d\n", contaVar); 
-        }
-     T_INICIO lista_comandos T_FIM
-        { 
+      }
+      T_INICIO lista_comandos T_FIM
+         { 
             int conta = desempilha();
             if (conta)
                fprintf(yyout, "\tDMEM\t%d\n", conta); 
-        }
-        { fprintf(yyout, "\tFIMP\n"); }
+         }
+      { fprintf(yyout, "\tFIMP\n"); }
    ;
 
 cabecalho
    : T_PROGRAMA T_IDENTIF
-       { fprintf(yyout, "\tINPP\n"); }
+      { fprintf(yyout, "\tINPP\n"); }
    ;
 
 tipo
    : T_LOGICO
-         { 
-            tipo = LOG;
+      { 
+         tipo = LOG;
+         // TODO #1
+         // Além do tipo, precisa guardar o TAM (tamanho) do tipo e a POS (posição) do tipo na tab. símbolos
 
-            // tam = buscaSimbolo(atomo);
-            // pos = buscaSimbolo(atomo);
-
-            // TODO #1
-            // Além do tipo, precisa guardar o TAM (tamanho) do
-            // tipo e a POS (posição) do tipo na tab. símbolos
-         }
+         tam = 1;
+         pos = buscaSimbolo(atomo);
+      }
    | T_INTEIRO
-         { 
-            tipo = INT;
-
-            // tam = buscaSimbolo(atomo);
-            // pos = buscaSimbolo(atomo);
-
-            // idem 
-        }
+      { 
+         tipo = INT;
+         // idem 
+         tam = 1;
+         pos = buscaSimbolo(atomo);
+      }
    | T_REGISTRO T_IDENTIF
-         { 
-            tipo = REG;
-
-            // tam = buscaSimbolo(atomo);
-            // pos = buscaSimbolo(atomo);
-
-            // TODO #2
-            // Aqui tem uma chamada de buscaSimbolo para encontrar
-            // as informações de TAM e POS do registro
-         }
+      { 
+         tipo = REG;
+         // TODO #2
+         // Aqui tem uma chamada de buscaSimbolo para encontrar as informações de TAM e POS do registro
+         tam = tabSimb[pos].tam;
+         pos = buscaSimbolo(atomo);
+         elemTab.campos = campo;
+         campo = NULL;
+      }
    ;
 
 definicoes
@@ -123,33 +118,17 @@ definicoes
 
 define 
    : T_DEF
-        {
+         {
             // TODO #3
             // Iniciar a lista de campos
-
-            // // Inicialize a lista de campos quando encontrar um novo tipo
-            // // Aqui, você cria uma nova instância da estrutura ListaCampos
-            // struct ListaCampos listaCampos;
-            // listaCampos.numCampos = 0;  // Inicializa o número de campos como zero
-            // // Atualize os atributos da tabela de símbolos
-            // tabSimb[pos].tam = 0;
-            // tabSimb[pos].pos = -1;  // ou outro valor indicando que não foi definido ainda
-            // tabSimb[pos].listaCampos = listaCampos;
-        } 
+            //lista_campos = NULL;
+         } 
    definicao_campos T_FIMDEF T_IDENTIF
-       {
-           // TODO #4
-           // Inserir esse novo tipo na tabela de simbolos
-           // com a lista que foi montada
+      {
+         // TODO #4
+         // Inserir esse novo tipo na tabela de simbolos com a lista que foi montada
 
-         //   // Agora, você associa essa lista de campos ao tipo definido
-         //   // na tabela de símbolos.
-         //   tabSimb[pos].listaCampos = listaCampos;
-         //   tabSimb[pos].tam = litabSimb[pos].ListaCampos.numCampos;
-         //   tabSimb[pos].pos = pos;  // ou o valor correto, dependendo da sua implementação
-         //   tabSimb[pos].listaCampos = listaCampos;
-
-       }
+      }
    ;
 
 definicao_campos
@@ -165,21 +144,10 @@ lista_campos
          // esta sendo construida
          // o deslocamento (endereço) do próximo campo
          // será o deslocamento anterior mais o tamanho desse campo
-
-         //          // Aqui, você adiciona o campo atual à lista
-         // // de campos associada ao tipo sendo definido.
-         // // Supondo que listaCampos é a estrutura associada ao tipo:
-         // strcpy(listaCampos.campos[listaCampos.numCampos].nome, atomo);
-         // listaCampos.campos[listaCampos.numCampos].tipo = tipo;
-         // listaCampos.numCampos++;
       }
    | T_IDENTIF
       {
          // // idem
-         // // Faça o mesmo aqui, pois é uma lista com um único campo.
-         // strcpy(listaCampos.campos[listaCampos.numCampos].nome, atomo);
-         // listaCampos.campos[listaCampos.numCampos].tipo = tipo;
-         // listaCampos.numCampos++;
       }
    ;
 
@@ -195,28 +163,39 @@ declaracao_variaveis
 
 lista_variaveis
    : lista_variaveis
-     T_IDENTIF 
-        { 
+      T_IDENTIF 
+         { 
             strcpy(elemTab.id, atomo);
             elemTab.end = contaVar;
             elemTab.tip = tipo;
-            // TODO #6
+            // TODO #6 - FEITO
             // Tem outros campos para acrescentar na tab. símbolos
+            elemTab.tam = tam;
+            elemTab.pos = pos;
             insereSimbolo (elemTab);
-            contaVar++; 
-            // TODO #7
-            // Se a variavel for registro
-            // contaVar = contaVar + TAM (tamanho do registro)
-        }
+            // TODO #7 - FEITO
+            // Se a variavel for registro contaVar = contaVar + TAM (tamanho do registro)
+            if(elemTab.tip == REG){
+               contaVar = contaVar + tam;
+            }  else {
+               contaVar++;
+            }
+         }
    | T_IDENTIF
        { 
             strcpy(elemTab.id, atomo);
             elemTab.end = contaVar;
             elemTab.tip = tipo;
             // idem
+            elemTab.tam = tam;
+            elemTab.pos = pos;
             insereSimbolo (elemTab);
-            contaVar++;
-            // idem 
+            // idem
+            if(elemTab.tip == REG){
+               contaVar = contaVar + tam;
+            } else {
+               contaVar++;
+            }
        }
    ;
 
@@ -238,214 +217,219 @@ entrada_saida
    ;
 
 entrada
-   : T_LEIA T_IDENTIF
-       { 
-          int pos = buscaSimbolo (atomo);
-          // TODO #8
-          // Se for registro, tem que fazer uma repetição do
-          // TAM do registro de leituras
-          fprintf(yyout, "\tLEIA\n"); 
-          fprintf(yyout, "\tARZG\t%d\n", tabSimb[pos].end);
+   : T_LEIA expressao_acesso
+      { 
+         int pos = buscaSimbolo (atomo);
+         // TODO #8
+         // Se for registro, tem que fazer uma repetição do TAM do registro de leituras
+         // if(elemTab.tip == REG){
+         //
+         // }
+         fprintf(yyout, "\tLEIA\n"); 
+         fprintf(yyout, "\tARZG\t%d\n", tabSimb[pos].end);
        }
    ;
 
 saida
    : T_ESCREVA expressao
-       {  
-          desempilha(); 
-          // TODO #9
-          // Se for registro, tem que fazer uma repetição do
-          // TAM do registro de escritas
-          fprintf(yyout, "\tESCR\n"); 
+      {  
+         desempilha(); 
+         // TODO #9
+         // Se for registro, tem que fazer uma repetição do TAM do registro de escritas
+         // if(elemTab.tip == REG){
+         //
+         //  }
+         fprintf(yyout, "\tESCR\n"); 
       }
    ;
 
 atribuicao
    : expressao_acesso
-       { 
+      { 
          // TODO #10 - FEITO
          // Tem que guardar o TAM, DES e o TIPO (POS do tipo, se for registro)
-          empilha(tam);
-          empilha(des);
-          empilha(tipo);
-       }
-     T_ATRIB expressao
-       { 
-          int tipexp = desempilha();
-          int tipvar = desempilha();
-          int des = desempilha();
-          int tam = desempilha();
-          if (tipexp != tipvar)
-             yyerror("Incompatibilidade de tipo!");
-          // TODO #11 - FEITO
-          // Se for registro, tem que fazer uma repetição do
-          // TAM do registro de ARZG
-          for (int i = 0; i < tam; i++)
-             fprintf(yyout, "\tARZG\t%d\n", des + i); 
-       }
+         empilha(tam);
+         empilha(des);
+         empilha(tipo);
+      }
+      T_ATRIB expressao
+      { 
+         int tipexp = desempilha();
+         int tipvar = desempilha();
+         int des = desempilha();
+         int tam = desempilha();
+         if (tipexp != tipvar){
+            yyerror("Incompatibilidade de tipo!");
+         }
+         // TODO #11 - FEITO
+         // Se for registro, tem que fazer uma repetição do TAM do registro de ARZG
+         for (int i = 0; i < tam; i++){
+            fprintf(yyout, "\tARZG\t%d\n", des + i); 
+         }
+      }
    ;
 
 selecao
    : T_SE expressao T_ENTAO 
-       {  
-          int t = desempilha();
-          if (t != LOG)
-            yyerror("Incompatibilidade de tipo!");
-          fprintf(yyout, "\tDSVF\tL%d\n", ++rotulo); 
-          empilha(rotulo);
-       }
-     lista_comandos T_SENAO 
-       {  
-           fprintf(yyout, "\tDSVS\tL%d\n", ++rotulo);
-           int rot = desempilha(); 
-           fprintf(yyout, "L%d\tNADA\n", rot);
-           empilha(rotulo); 
-       }
-     lista_comandos T_FIMSE
-       {  
-          int rot = desempilha();
-          fprintf(yyout, "L%d\tNADA\n", rot);  
-       }
-   ;
-
-repeticao
-   : T_ENQTO 
-       { 
-         fprintf(yyout, "L%d\tNADA\n", ++rotulo);
-         empilha(rotulo);  
-       }
-     expressao T_FACA 
-       {  
+      {  
          int t = desempilha();
          if (t != LOG)
             yyerror("Incompatibilidade de tipo!");
          fprintf(yyout, "\tDSVF\tL%d\n", ++rotulo); 
          empilha(rotulo);
-       }
-     lista_comandos T_FIMENQTO
-       { 
-          int rot1 = desempilha();
-          int rot2 = desempilha();
-          fprintf(yyout, "\tDSVS\tL%d\n", rot2);
-          fprintf(yyout, "L%d\tNADA\n", rot1);  
-       }
+      }
+      lista_comandos T_SENAO 
+      {  
+         fprintf(yyout, "\tDSVS\tL%d\n", ++rotulo);
+         int rot = desempilha(); 
+         fprintf(yyout, "L%d\tNADA\n", rot);
+         empilha(rotulo); 
+      }
+      lista_comandos T_FIMSE
+      {  
+         int rot = desempilha();
+         fprintf(yyout, "L%d\tNADA\n", rot);  
+      }
+   ;
+
+repeticao
+   : T_ENQTO 
+      { 
+         fprintf(yyout, "L%d\tNADA\n", ++rotulo);
+         empilha(rotulo);  
+      }
+      expressao T_FACA 
+      {  
+        int t = desempilha();
+         if (t != LOG)
+            yyerror("Incompatibilidade de tipo!");
+         fprintf(yyout, "\tDSVF\tL%d\n", ++rotulo); 
+         empilha(rotulo);
+      }
+      lista_comandos T_FIMENQTO
+      { 
+         int rot1 = desempilha();
+         int rot2 = desempilha();
+         fprintf(yyout, "\tDSVS\tL%d\n", rot2);
+         fprintf(yyout, "L%d\tNADA\n", rot1);  
+      }
    ;
 
 expressao
    : expressao T_VEZES expressao
-       {  testaTipo(INT,INT,INT); fprintf(yyout, "\tMULT\n");  }
-   | expressao T_DIV expressao
-       {  testaTipo(INT,INT,INT); fprintf(yyout, "\tDIVI\n");  }
-   | expressao T_MAIS expressao
+      {  testaTipo(INT,INT,INT); fprintf(yyout, "\tMULT\n");  }
+    expressao T_DIV expressao
+      {  testaTipo(INT,INT,INT); fprintf(yyout, "\tDIVI\n");  }
+    expressao T_MAIS expressao
       {  testaTipo(INT,INT,INT); fprintf(yyout, "\tSOMA\n");  }
-   | expressao T_MENOS expressao
+    expressao T_MENOS expressao
       {  testaTipo(INT,INT,INT); fprintf(yyout, "\tSUBT\n");  }
-   | expressao T_MAIOR expressao
+    expressao T_MAIOR expressao
       {  testaTipo(INT,INT,LOG); fprintf(yyout, "\tCMMA\n");  }
-   | expressao T_MENOR expressao
+    expressao T_MENOR expressao
       {  testaTipo(INT,INT,LOG); fprintf(yyout, "\tCMME\n");  }
-   | expressao T_IGUAL expressao
+    expressao T_IGUAL expressao
       {  testaTipo(INT,INT,LOG); fprintf(yyout, "\tCMIG\n");  }
-   | expressao T_E expressao
+    expressao T_E expressao
       {  testaTipo(LOG,LOG,LOG); fprintf(yyout, "\tCONJ\n");  }
-   | expressao T_OU expressao
+    expressao T_OU expressao
       {  testaTipo(LOG,LOG,LOG); fprintf(yyout, "\tDISJ\n");  }
-   | termo
+    termo
    ;
 
 expressao_acesso
    : T_IDPONTO
-       {   //--- Primeiro nome do registro
-           if (!ehRegistro) {
-              ehRegistro = 1;
-              // TODO #12
-              // 1. busca o simbolo na tabela de símbolos
-              // 2. se não for do tipo registo tem erro
-              // 3. guardar o TAM, POS e DES desse t_IDENTIF
-           } else {
-              //--- Campo que eh registro
-              // 1. busca esse campo na lista de campos
-              // 2. se não encontrar, erro
-              // 3. se encontrar e não for registro, erro
-              // 4. guardar o TAM, POS e DES desse CAMPO
-           }
-       }
+      {   //--- Primeiro nome do registro
+            if (!ehRegistro) {
+               ehRegistro = 1;
+               // TODO #12
+               // 1. busca o simbolo na tabela de símbolos
+               // 2. se não for do tipo registo tem erro
+               // 3. guardar o TAM, POS e DES desse t_IDENTIF
+            } else {
+               //--- Campo que eh registro
+               // 1. busca esse campo na lista de campos
+               // 2. se não encontrar, erro
+               // 3. se encontrar e não for registro, erro
+               // 4. guardar o TAM, POS e DES desse CAMPO
+            }
+      }
      expressao_acesso
-   | T_IDENTIF
-       {   
-           if (ehRegistro) {
+   T_IDENTIF
+      {   
+            if (ehRegistro) {
                // TODO #13
                // 1. buscar esse campo na lista de campos
                // 2. Se não encontrar, erro
                // 3. guardar o TAM, DES e TIPO desse campo.
                //    o tipo (TIP) nesse caso é a posição do tipo
                //    na tabela de simbolos
-           }
+            }
            else {
-              // TODO #14
-              int pos = buscaSimbolo (atomo);
-              // guardar TAM, DES e TIPO dessa variável
-           }
+               // TODO #14
+               int pos = buscaSimbolo (atomo);
+               // guardar TAM, DES e TIPO dessa variável
+            }
            ehRegistro = 0;
-       };
+      };
 
 termo
    : expressao_acesso
-       {
-          // TODO #15
-          // Se for registro, tem que fazer uma repetição do
-          // TAM do registro de CRVG (em ondem inversa)
-          fprintf(yyout, "\tCRVG\t%d\n", tabSimb[pos].end);  
-          empilha(tipo);
-       }
-   | T_NUMERO
-       {  
-          fprintf(yyout, "\tCRCT\t%s\n", atomo);  
-          empilha(INT);
-       }
-   | T_V
-       {  
-          fprintf(yyout, "\tCRCT\t1\n");
-          empilha(LOG);
-       }
-   | T_F
-       {  
-          fprintf(yyout, "\tCRCT\t0\n"); 
-          empilha(LOG);
-       }
-   | T_NAO termo
-       {  
-          int t = desempilha();
-          if (t != LOG)
-              yyerror ("Incompatibilidade de tipo!");
-          fprintf(yyout, "\tNEGA\n");
-          empilha(LOG);
-       }
-   | T_ABRE expressao T_FECHA
+      {
+         // TODO #15
+         // Se for registro, tem que fazer uma repetição do
+         // TAM do registro de CRVG (em ondem inversa)
+         fprintf(yyout, "\tCRVG\t%d\n", tabSimb[pos].end);  
+         empilha(tipo);
+      }
+      T_NUMERO
+      {  
+         fprintf(yyout, "\tCRCT\t%s\n", atomo);  
+         empilha(INT);
+      }
+      T_V
+      {  
+         fprintf(yyout, "\tCRCT\t1\n");
+         empilha(LOG);
+      }
+      T_F
+      {  
+         fprintf(yyout, "\tCRCT\t0\n"); 
+         empilha(LOG);
+      }
+      T_NAO termo
+      {  
+         int t = desempilha();
+         if (t != LOG)
+            yyerror ("Incompatibilidade de tipo!");
+         fprintf(yyout, "\tNEGA\n");
+         empilha(LOG);
+      }
+      T_ABRE expressao T_FECHA
    ;
 %%
 
 int main(int argc, char *argv[]) {
-    char *p, nameIn[100], nameOut[100];
-    argv++;
-    if (argc < 2) {
-        puts("\nCompilador da linguagem SIMPLES");
-        puts("\n\tUSO: ./simples <NOME>[.simples]\n\n");
-        exit(1);
-    }
-    p = strstr(argv[0], ".simples");
-    if (p) *p = 0;
-    strcpy(nameIn, argv[0]);
-    strcat(nameIn, ".simples");
-    strcpy(nameOut, argv[0]);
-    strcat(nameOut, ".mvs");
-    yyin = fopen(nameIn, "rt");
-    if (!yyin) {
-        puts ("Programa fonte não encontrado!");
-        exit(2);
-    }
-    yyout = fopen(nameOut, "wt");
-    yyparse();
-    printf("programa ok!\n\n");
-    return 0;
+   char *p, nameIn[100], nameOut[100];
+   argv++;
+   if (argc < 2) {
+         puts("\nCompilador da linguagem SIMPLES");
+         puts("\n\tUSO: ./simples <NOME>[.simples]\n\n");
+         exit(1);
+   }
+   p = strstr(argv[0], ".simples");
+   if (p) *p = 0;
+   strcpy(nameIn, argv[0]);
+   strcat(nameIn, ".simples");
+   strcpy(nameOut, argv[0]);
+   strcat(nameOut, ".mvs");
+   yyin = fopen(nameIn, "rt");
+   if (!yyin) {
+      puts ("Programa fonte não encontrado!");
+      exit(2);
+   }
+   yyout = fopen(nameOut, "wt");
+   yyparse();
+   printf("programa ok!\n\n");
+   return 0;
 }
