@@ -169,68 +169,6 @@ lista_campos
         // idem
       }
    ;
-%{
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "lexico.c"
-#include "utils.c"
-int contaVar = 0;
-int rotulo = 0;
-int ehRegistro = 0;
-int tipo;
-int tam; // tamanho da estrutura quando percorre expressão de acesso
-int des; // deslocamento para chegar no campo
-int pos; // posicao do tipo na tabela de simbolos
-%}
-
-%token T_PROGRAMA
-%token T_INICIO
-%token T_FIM
-%token T_IDENTIF
-%token T_LEIA
-%token T_ESCREVA
-%token T_ENQTO
-%token T_FACA
-%token T_FIMENQTO
-%token T_SE
-%token T_ENTAO
-%token T_SENAO
-%token T_FIMSE
-%token T_ATRIB
-%token T_VEZES
-%token T_DIV
-%token T_MAIS
-%token T_MENOS
-%token T_MAIOR
-%token T_MENOR
-%token T_IGUAL
-%token T_E
-%token T_OU
-%token T_V
-%token T_F
-%token T_NUMERO
-%token T_NAO
-%token T_ABRE
-%token T_FECHA
-%token T_LOGICO
-%token T_INTEIRO
-%token T_DEF
-%token T_FIMDEF
-%token T_REGISTRO
-%token T_IDPONTO
-
-%start programa
-
-%left T_E T_OU
-%left T_IGUAL
-%left T_MAIOR T_MENOR
-%left T_MAIS T_MENOS
-%left T_VEZES T_DIV
-
-%%
-
 
 variaveis
    : /* vazio */
