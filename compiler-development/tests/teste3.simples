@@ -1,0 +1,14 @@
+programa teste3
+    inteiro a   
+inicio 
+    leia a 
+    enquanto a > 0 faca 
+        escreva a 
+        a <- a - 1 
+    fimenquanto
+    se a < 0 entao
+        escreva 3
+    senao  
+        escreva 4
+    fimse
+fimprograma

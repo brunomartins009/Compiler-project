@@ -1,0 +1,32 @@
+/*
+-----------------------TABELA DE SIMBOLOS------------------------
+        ID | END | TIP | TAM | POS | CAMPOS 
+-----------------------------------------------------------------
+   inteiro |  -1 | INT |   1 |   0 |
+    logico |  -1 | LOG |   1 |   1 |
+         c |  -1 | REG |   2 |   2 | (a,INT,0,0,1)=> (b,INT,0,1,1)
+         a |   0 | INT |   1 |   0 |
+         b |   1 | INT |   1 |   0 |
+         x |   2 | REG |   2 |   2 | (a,INT,0,0,1)=> (b,INT,0,1,1)
+         y |   4 | REG |   2 |   2 | (a,INT,0,0,1)=> (b,INT,0,1,1)
+*/
+programa registro9
+   def
+      inteiro a
+      inteiro b
+   fimdef c
+
+   inteiro a
+   inteiro b
+   registro c x y
+inicio
+   leia a
+   leia b
+   y.a <- a
+   y.b <- b
+   x <- y
+   enquanto x.a < x.b faca
+       escreva x.a 
+       x.a <- x.a + 1
+   fimenquanto
+fimprograma

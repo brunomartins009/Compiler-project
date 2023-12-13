@@ -1,0 +1,13 @@
+/*
+ERRO na linha 12: O campo [z] não existe na estrutura
+*/
+programa registro12
+   def
+      inteiro a
+      inteiro b
+   fimdef c
+   inteiro a
+   registro c x y
+inicio
+   escreva x.z
+fimprograma

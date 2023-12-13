@@ -1,0 +1,13 @@
+/*
+ERRO na linha 13: Incompatibilidade de tipo!
+*/
+programa registro14
+   def
+      inteiro a
+      inteiro b
+   fimdef c
+   inteiro a
+   registro c x y
+inicio
+   x.a <- y
+fimprograma

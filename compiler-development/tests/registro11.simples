@@ -1,0 +1,13 @@
+/*
+ERRO na linha 12: O identificador [a] não é registro!
+*/
+programa registro11
+   def
+      inteiro a
+      inteiro b
+   fimdef c
+   inteiro a
+   registro c x y
+inicio
+   escreva a.a
+fimprograma

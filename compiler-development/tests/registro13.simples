@@ -1,0 +1,13 @@
+/*
+ERRO na linha 12: O campo [a] não é registro!
+*/
+programa registro13
+   def
+      inteiro a
+      inteiro b
+   fimdef c
+   inteiro a
+   registro c x y
+inicio
+   escreva x.a.b
+fimprograma

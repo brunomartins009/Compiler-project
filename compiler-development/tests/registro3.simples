@@ -1,0 +1,30 @@
+/*
+-----------------------TABELA DE SIMBOLOS------------------------
+        ID | END | TIP | TAM | POS | CAMPOS 
+-----------------------------------------------------------------
+   inteiro |  -1 | INT |   1 |   0 |
+    logico |  -1 | LOG |   1 |   1 |
+         c |  -1 | REG |   2 |   2 | (a,INT,0,0,1)=> (b,LOG,1,1,1)
+         d |  -1 | REG |   3 |   3 | (x,REG,2,0,2)=> (y,INT,0,2,1)
+         x |   0 | REG |   2 |   2 | (a,INT,0,0,1)=> (b,LOG,1,1,1)
+         y |   2 | REG |   3 |   3 | (x,REG,2,0,2)=> (y,INT,0,2,1)
+*/
+programa registro3
+   def
+      inteiro a
+      logico b
+   fimdef c
+
+   def 
+      registro c x
+      inteiro y
+   fimdef d
+
+   registro c x
+   registro d y
+
+inicio
+   escreva x
+   escreva y
+   escreva y.x
+fimprograma

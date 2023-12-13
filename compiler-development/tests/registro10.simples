@@ -1,0 +1,26 @@
+/*
+-----------------------TABELA DE SIMBOLOS------------------------
+        ID | END | TIP | TAM | POS | CAMPOS 
+-----------------------------------------------------------------
+   inteiro |  -1 | INT |   1 |   0 |
+    logico |  -1 | LOG |   1 |   1 |
+         c |  -1 | REG |   3 |   2 | (start,INT,0,0,1)=> (end,INT,0,1,1)=> (test,LOG,1,2,1)
+         x |   0 | REG |   3 |   2 | (start,INT,0,0,1)=> (end,INT,0,1,1)=> (test,LOG,1,2,1)
+*/
+programa registro10
+   def
+      inteiro start
+      inteiro end
+      logico test
+   fimdef c
+   registro c x
+inicio
+   leia x.start
+   leia x.end
+   x.test <- x.start < x.end
+   enquanto x.test faca
+       escreva x.start
+       x.start <- x.start + 1
+       x.test <- x.start < x.end
+   fimenquanto
+fimprograma
