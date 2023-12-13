@@ -82,7 +82,7 @@ cabecalho
        {
           strcpy(elemTab.id, "inteiro");
           elemTab.end = -1;
-          elemTab.tip = atoi(nomeTipo[2]);
+          elemTab.tip = atoi(nomeTipo[1]);
           elemTab.tam = 1;
           elemTab.pos = pos++;
           insereSimbolo(elemTab);
