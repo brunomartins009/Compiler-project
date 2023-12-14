@@ -56,7 +56,7 @@ ptregistro insere(ptregistro L, char nome[100], int tipo, int pos, int desl, int
 // TODO #3 -
 // Adaptar "busca" do lista.c, feito em aula
 ptregistro busca(ptregistro L, char *nome) {
-    while (L && L->nome != nome) {
+    while (L && strcmp(L->nome, nome) != 0) {
         L = L->prox;
     }
     return L;
