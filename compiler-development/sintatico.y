@@ -12,6 +12,7 @@ int tipo;
 int tam; // tamanho da estrutura qdo percorre expressão de acesso
 int des; // deslocamento para chegar no campo
 int pos; // posicao do tipo na tabela de simbolos
+// ptregistro lista_campos;
 %}
 
 %token T_PROGRAMA
@@ -104,27 +105,23 @@ tipo
             tipo = LOG; 
             // TODO #1
             // Além do tipo, precisa guardar o TAM (tamanho) do tipo e a POS (posição) do tipo na tab. símbolos
-            // tam = 1;
-            // pos = 1;
-            tabSimb[pos].tam = tam;
-            tabSimb[pos].pos = pos; 
+            tam = tabSimb[pos].tam;
+            pos = tabSimb[pos].pos;  
          }
    | T_INTEIRO
          { 
             tipo = INT;
             // idem 
-            // tam = 1;
-            // pos = 0;
-            tabSimb[pos].tam = tam;
-            tabSimb[pos].pos = pos; 
+            tam = tabSimb[pos].tam;
+            pos = tabSimb[pos].pos; 
         }
    | T_REGISTRO T_IDENTIF
          { 
             tipo = REG; 
             // TODO #2
             // Aqui tem uma chamada de buscaSimbolo para encontrar as informações de TAM e POS do registro
-            pos = buscaSimbolo(atomo);
-            tabSimb[pos].tam = tam;
+            elemTab.pos = buscaSimbolo(atomo);
+            elemTab.tam = buscaSimbolo(atomo);
             elemTab.listaCampos = tabSimb[pos].listaCampos;
          }
    ;
@@ -139,7 +136,7 @@ define
          {
             // TODO #3
             // Iniciar a lista de campos
-            struct listaCampos lista_campos = {.nome = {0}};
+            // struct listaCampos lista_campos = {.nome = {0}};
          } 
    definicao_campos T_FIMDEF T_IDENTIF
        {
@@ -166,12 +163,14 @@ lista_campos
          // o deslocamento anterior mais o tamanho desse campo
          elemTab.listaCampos = insere(elemTab.listaCampos, atomo ,tipo, pos, elemTab.tam, tam);
          des += elemTab.tam;
+         elemTab.tam += tam;
       }
    | T_IDENTIF
       {
         // idem
         elemTab.listaCampos = insere(elemTab.listaCampos, atomo ,tipo, pos, elemTab.tam, tam);
         des += elemTab.tam;
+        elemTab.tam += tam;
       }
    ;
 
@@ -202,6 +201,8 @@ lista_variaveis
             // Se a variavel for registro contaVar = contaVar + TAM (tamanho do registro)
             if(elemTab.tip == REG){
                contaVar = contaVar + elemTab.tam;
+            } else{
+               contaVar++;
             }
         }
    | T_IDENTIF
@@ -217,6 +218,8 @@ lista_variaveis
             // idem 
             if(elemTab.tip == REG){
                contaVar = contaVar + elemTab.tam;
+            } else{
+               contaVar++;
             }
        }
    ;
