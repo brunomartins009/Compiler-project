@@ -1,3 +1,13 @@
+/*+--------------------------------------------------------
+            UNIFAL - Universidade Federal de Alfenas.
+               BACHARELADO EM CIECIA DE COMPUTACAO.
+    Trabalho..: Registro e verificacao de tipos
+    Disciplina: Teoria de Linguagens e Compiladores
+    Professor..: Luiz Eduardo da Silva
+    Aluno......: Bruno Martins Cordeiro
+    Data.......: 15/12/2023
+  +---------------------------------------------------------*/
+
 %{
 #include "sintatico.h"  //o sintatico.h faz a sincronização entre os tokens do sintatico e os termos do lexico
 int yyerror(char *);    
