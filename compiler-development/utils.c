@@ -1,3 +1,13 @@
+/*+--------------------------------------------------------
+            UNIFAL - Universidade Federal de Alfenas.
+               BACHARELADO EM CIECIA DE COMPUTACAO.
+    Trabalho..: Registro e verificacao de tipos
+    Disciplina: Teoria de Linguagens e Compiladores
+    Professor..: Luiz Eduardo da Silva
+    Aluno......: Bruno Martins Cordeiro
+    Data.......: 15/12/2023
+  +---------------------------------------------------------*/
+
 // Tabela de SImbolos
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,7 +66,7 @@ ptregistro insere(ptregistro L, char nome[100], int tipo, int pos, int desl, int
 // TODO #3 -
 // Adaptar "busca" do lista.c, feito em aula
 ptregistro busca(ptregistro L, char *nome) {
-    while (L && strcmp(L->nome, nome) != 0) {
+    while (L && L->nome != nome) {
         L = L->prox;
     }
     return L;
@@ -68,8 +78,10 @@ void mostra(ptregistro L) {
     while (L) {
         if (L->prox) {
             printf("(%s, %s, %d, %d, %d)=>", L->nome, nomeTipo[L->tipo], L->pos, L->desl, L->tam);
+            
         } else {
             printf("(%s, %s, %d, %d, %d)", L->nome, nomeTipo[L->tipo], L->pos, L->desl, L->tam);
+           
         }
         L = L->prox;
     }
@@ -133,9 +145,12 @@ void mostraTabela() {
                nomeTipo[tabSimb[i].tip],
                tabSimb[i].tam,
                tabSimb[i].pos);
-        mostra(tabSimb[i].listaCampos);
+        if(tabSimb[i].tip == REG){
+            mostra(tabSimb[i].listaCampos);
+        }
     }
     puts("");
+    
 }
 
 // Pilha Semantica
